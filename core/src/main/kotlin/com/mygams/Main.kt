@@ -32,8 +32,8 @@ class Main : ApplicationAdapter() {
         skin = Skin(Gdx.files.internal("ui/uiskin.json"))
         
         val button = TextButton ("Кнопка!", skin)
-        button.setPosition(100, 100)
-        button.setSize(200, 60)
+        button.setPosition(100f, 100f)
+        button.setSize(200f, 60f)
         
         stage.addActor(button)
     }
