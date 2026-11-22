@@ -118,19 +118,6 @@ class Main : ApplicationAdapter() {
                 return true
             }
         }
-<<<<<<< HEAD
-        stage = Stage(ScreenViewport())
-        Gdx.input.inputProcessor = stage
-        
-        skin = Skin(Gdx.files.internal("ui/uiskin.json"))
-        
-        val button = TextButton ("Кнопка!", skin)
-        button.setPosition(100f, 100f)
-        button.setSize(200f, 60f)
-        
-        stage.addActor(button)
-=======
->>>>>>> a480f98 (Update)
     }
 
     override fun render() {
