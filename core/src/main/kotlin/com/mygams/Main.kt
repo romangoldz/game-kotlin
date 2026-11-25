@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.utils.ScreenUtils
+import com.badlogic.gdx.Gdx
 
 class Main : ApplicationAdapter() {
     private lateinit var map: TiledMap
@@ -13,25 +14,29 @@ class Main : ApplicationAdapter() {
     private lateinit var renderMap: OrthogonalTiledMapRenderer
     
     override fun create() {
-        com.mygams.android.CrashLogger.log(
-            "Main.create() started"
+
+        Gdx.files.local("logs.txt").writeString(
+            "\n========== GAME START ==========\n",
+            true
         )
-        camera = OrthographicCamera()
-        camera.setToOrtho(false, 800f, 400f)
-        
-        com.mygams.android.CrashLogger.log(
-            "Loading map..."
+
+        Gdx.files.local("logs.txt").writeString(
+            "Loading map...\n",
+            true
         )
-        
+
         map = TmxMapLoader().load("tilemap/map.tmx")
-        
-        com.mygams.android.CrashLogger.log(
-            "Loading map..."
+
+        Gdx.files.local("logs.txt").writeString(
+            "Map loaded successfully!\n",
+            true
         )
+
         renderMap = OrthogonalTiledMapRenderer(map, 1f)
-        
-        com.mygams.android.CrashLogger.log(
-            "Game initialized successfully"
+
+        Gdx.files.local("logs.txt").writeString(
+            "Game initialized successfully!\n",
+            true
         )
     }
     
