@@ -1,35 +1,31 @@
 package com.mygams
 
 import com.badlogic.gdx.ApplicationAdapter
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
-
+import com.badlogic.gdx.utils.ScreenUtils
 
 class Main : ApplicationAdapter() {
-    lateinit var map: TiledMap
-    lateinit var camera: OrthographicCamera
-    lateinit var renderMap: OrthogonalTiledMapRenderer
+    private lateinit var map: TiledMap
+    private lateinit var camera: OrthographicCamera
+    private lateinit var renderMap: OrthogonalTiledMapRenderer
     
     override fun create() {
         camera = OrthographicCamera()
-        camera.setToOrtho(false, 800f, 400f)
+        camera.setToOrtho(false, 800f, 400f) // Камера налаштована
         
         map = TmxMapLoader().load("suka.tmx")
-        renderMap = OrthogonalTiledMapRenderer(map,1f)
-        
+        renderMap = OrthogonalTiledMapRenderer(map, 1f)
     }
     
     override fun render() {
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+        ScreenUtils.clear(0f, 0f, 0f, 1f) // Чистимо чернь
         
         camera.update()
-        renderMap.view = camera
-        renderMap.render()
+        renderMap.setView(camera) // Задав камеру рендереру
+        renderMap.render()        // Намалював
     }
     
     override fun dispose() {
