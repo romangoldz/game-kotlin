@@ -12,54 +12,57 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class CrashLogger implements Thread.UncaughtExceptionHandler {
+public class CrashLogger {
 
-    private final Context context;
-    private final Thread.UncaughtExceptionHandler previousHandler;
+    private static File logFile;
+    private static Thread.UncaughtExceptionHandler previousHandler;
 
-    public CrashLogger(Context context) {
-        this.context = context.getApplicationContext();
-        this.previousHandler = Thread.getDefaultUncaughtExceptionHandler();
+    public static void install(Context context) {
+        logFile = new File(context.getFilesDir(), "logs.txt");
+
+        previousHandler = Thread.getDefaultUncaughtExceptionHandler();
+
+        Thread.setDefaultUncaughtExceptionHandler((thread, error) -> {
+            log("========== CRASH ==========");
+            log("Time: " + new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss",
+                Locale.getDefault()
+            ).format(new Date()));
+
+            log("Thread: " + thread.getName());
+
+            StringWriter sw = new StringWriter();
+            error.printStackTrace(new PrintWriter(sw));
+
+            log(sw.toString());
+            log("========== END CRASH ==========");
+
+            if (previousHandler != null) {
+                previousHandler.uncaughtException(thread, error);
+            }
+        });
+
+        log("CrashLogger installed");
+        log("Log file: " + logFile.getAbsolutePath());
     }
 
-    @Override
-    public void uncaughtException(Thread thread, Throwable error) {
-
+    public static synchronized void log(String message) {
         try {
-            File logFile = new File(context.getFilesDir(), "logs.txt");
+            if (logFile == null) return;
 
             String time = new SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:ss",
+                "HH:mm:ss.SSS",
                 Locale.getDefault()
             ).format(new Date());
 
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            error.printStackTrace(pw);
-            pw.flush();
+            FileWriter writer = new FileWriter(logFile, true);
 
-            synchronized (CrashLogger.class) {
-                FileWriter writer = new FileWriter(logFile, true);
-
-                writer.write("\n\n================================\n");
-                writer.write("CRASH: " + time + "\n");
-                writer.write("THREAD: " + thread.getName() + "\n");
-                writer.write("ERROR:\n");
-                writer.write(sw.toString());
-                writer.write("\n================================\n");
-
-                writer.flush();
-                writer.close();
-            }
-
-            Log.e("GAME_CRASH", "Game crashed", error);
+            writer.write("[" + time + "] " + message + "\n");
+            writer.flush();
+            writer.close();
 
         } catch (Exception e) {
-            Log.e("GAME_CRASH", "Cannot write crash log", e);
-        }
-
-        if (previousHandler != null) {
-            previousHandler.uncaughtException(thread, error);
+            Log.e("CrashLogger", "Cannot write log", e);
         }
     }
 }

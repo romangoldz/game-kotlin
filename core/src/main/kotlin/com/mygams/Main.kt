@@ -13,11 +13,26 @@ class Main : ApplicationAdapter() {
     private lateinit var renderMap: OrthogonalTiledMapRenderer
     
     override fun create() {
+        com.mygams.android.CrashLogger.log(
+            "Main.create() started"
+        )
         camera = OrthographicCamera()
         camera.setToOrtho(false, 800f, 400f)
         
+        com.mygams.android.CrashLogger.log(
+            "Loading map..."
+        )
+        
         map = TmxMapLoader().load("tilemap/map.tmx")
+        
+        com.mygams.android.CrashLogger.log(
+            "Loading map..."
+        )
         renderMap = OrthogonalTiledMapRenderer(map, 1f)
+        
+        com.mygams.android.CrashLogger.log(
+            "Game initialized successfully"
+        )
     }
     
     override fun render() {

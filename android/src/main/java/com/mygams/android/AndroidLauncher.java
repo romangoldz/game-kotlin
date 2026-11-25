@@ -2,6 +2,7 @@
 package com.mygams.android;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
@@ -13,16 +14,20 @@ public class AndroidLauncher extends AndroidApplication {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Увімкнення запису помилок
-        Thread.setDefaultUncaughtExceptionHandler(
-            new CrashLogger(getApplicationContext())
-        );
+        // Підключаємо логер до запуску гри
+        CrashLogger.install(getApplicationContext());
+
+        CrashLogger.log("AndroidLauncher: onCreate started");
 
         AndroidApplicationConfiguration configuration =
             new AndroidApplicationConfiguration();
 
         configuration.useImmersiveMode = true;
 
+        CrashLogger.log("Initializing libGDX");
+
         initialize(new Main(), configuration);
+
+        CrashLogger.log("libGDX initialized");
     }
 }
