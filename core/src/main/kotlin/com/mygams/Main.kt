@@ -14,18 +14,18 @@ class Main : ApplicationAdapter() {
     
     override fun create() {
         camera = OrthographicCamera()
-        camera.setToOrtho(false, 800f, 400f) // Камера налаштована
+        camera.setToOrtho(false, 800f, 400f)
         
-        map = TmxMapLoader().load("suka.tmx")
+        map = TmxMapLoader().load("tilemap/map.tmx")
         renderMap = OrthogonalTiledMapRenderer(map, 1f)
     }
     
     override fun render() {
-        ScreenUtils.clear(0f, 0f, 0f, 1f) // Чистимо чернь
+        ScreenUtils.clear(0f, 0f, 0f, 1f) 
         
         camera.update()
-        renderMap.setView(camera) // Задав камеру рендереру
-        renderMap.render()        // Намалював
+        renderMap.setView(camera)
+        renderMap.render()
     }
     
     override fun dispose() {
