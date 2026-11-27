@@ -29,7 +29,7 @@ class TileMap(public val game: Game) : Screen {
         ScreenUtils.clear(0.1f, 0.1f, 0.1f, 1f)
         
         camera.update()
-        setView(camera)
+        renderer.setView(camera)
         renderer.render()
         
         if (Gdx.input.justTouched()) {
