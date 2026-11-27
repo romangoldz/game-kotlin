@@ -29,7 +29,7 @@ class TileMap(public val game: Game) : Screen {
         ScreenUtils.clear(0.1f, 0.1f, 0.1f, 1f)
         
         camera.update()
-        renderer.view = camera // Правильнее юзать setView(camera)
+        setView(camera)
         renderer.render()
         
         if (Gdx.input.justTouched()) {
@@ -37,7 +37,7 @@ class TileMap(public val game: Game) : Screen {
             game.screen = UI(game) 
             // Dispose лучше вызывать осознанно. 
             // Если этот экран тебе больше не всрался — удаляй.
-            this.dispose() 
+            
         }
     }
 
