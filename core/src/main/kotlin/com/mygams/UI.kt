@@ -18,7 +18,7 @@ class UI(public  val game: Game) : Screen {
     private val skin = Skin(Gdx.files.internal("ui/uiskin.json"))
 
     init {
-        val button = TextButton("Натисни мене", skin)
+        val button = TextButton("tap me!", skin)
 
         button.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
