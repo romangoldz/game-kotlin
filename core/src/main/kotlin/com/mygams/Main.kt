@@ -1,58 +1,50 @@
 package com.mygams
 
-import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.maps.tiled.TiledMap
-import com.badlogic.gdx.maps.tiled.TmxMapLoader
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
+import com.badlogic.gdx.Screen
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.utils.ScreenUtils
+import com.badlogic.gdx.utils.viewport.ScreenViewport
 
-import com.badlogic.gdx.ApplicationAdapter
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.maps.tiled.TiledMap
-import com.badlogic.gdx.maps.tiled.TmxMapLoader
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
-import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.utils.ScreenUtils
+class Main : Screen {
 
-class Main : ApplicationAdapter() {
+    private val stage = Stage(ScreenViewport())
+    private val skin = Skin(Gdx.files.internal("ui/uiskin.json"))
 
-    private lateinit var camera: OrthographicCamera
-    private lateinit var map: TiledMap
-    private lateinit var renderer: OrthogonalTiledMapRenderer
+    init {
+        val button = TextButton("Натисни мене", skin)
 
-    override fun create() {
-        // Камера
-        camera = OrthographicCamera()
-        camera.setToOrtho(false, 800f, 600f)
+        button.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Gdx.app.log("BUTTON", "Клікнуто!")
+            }
+        })
 
-        // Завантаження карти
-        map = TmxMapLoader().load("tilemap/map.tmx")
+        stage.addActor(button)
+        button.setSize(200f, 60f)
+        button.setPosition(100f, 100f)
 
-        // Створення рендерера
-        renderer = OrthogonalTiledMapRenderer(map, 1f)
+        Gdx.input.inputProcessor = stage
     }
 
-    override fun render() {
-        ScreenUtils.clear(0.1f, 0.1f, 0.1f, 1f)
-
-        // Оновлення камери
-        camera.update()
-
-        // Передача камери рендереру
-        renderer.setView(camera)
-
-        // Малювання карти
-        renderer.render()
+    override fun render(delta: Float) {   // ← параметр delta тут
+        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f)
+        stage.act(delta)
+        stage.draw()
     }
 
+    override fun resize(width: Int, height: Int) = stage.viewport.update(width, height, true)
+    override fun show() {}
+    override fun hide() {}
+    override fun pause() {}
+    override fun resume() {}
     override fun dispose() {
-        renderer.dispose()
-        map.dispose()
+        stage.dispose()
+        skin.dispose()
     }
 }
