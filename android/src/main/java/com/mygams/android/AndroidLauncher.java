@@ -11,7 +11,7 @@ public class AndroidLauncher extends AndroidApplication {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AndroidApplicationConfiguration configuration = new AndroidApplicationConfiguration();
+        AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         configuration.useImmersiveMode = true; // Recommended, but not required.
         initialize(new MyGdxGame(), config);
     }
